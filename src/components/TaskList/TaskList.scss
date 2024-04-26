@@ -59,52 +59,27 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    align-items: center;
     margin-bottom: 20px;
-  }
-  & .filters_div {
-    & .content {
-      @include FontStyle(18px, 500, rgb(14, 13, 13));
+    & .search_div {
+      width: 75%;
+    }
+    & .filter_sort_div {
+      width: 25%;
       display: flex;
       align-items: center;
-      & .tags {
-        margin-left: 10px;
-      }
-    }
-    & .filter_body {
-      margin-bottom: 20px;
-      & .filter_heading {
-        @include FontStyle(16px, 400, rgba(88, 88, 89, 1));
-        margin-bottom: 10px;
-      }
-      & .ant-checkbox-wrapper {
-        @include FontStyle(14px, normal, rgb(14, 13, 13));
+      justify-content: flex-end;
+      & .filters_badge {
+        font-size: 24px;
         cursor: pointer;
+        color: #1677ff;
+        margin: 0px 10px 0px 20px;
       }
-      & .dates_div {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-    }
-  }
-  & .sort_div {
-    & .content {
-      @include FontStyle(18px, 500, rgb(14, 13, 13));
-    }
-    & .radio_content {
-      @include FontStyle(16px, normal, rgb(14, 13, 13));
-      cursor: pointer;
     }
   }
   & .no_content {
     @include FontStyle(22px, 600, #051923);
     text-align: center;
     margin: 100px 0px;
-  }
-  & .action_content {
-    display: flex;
-    justify-content: center;
   }
   & .task_body {
     border-radius: 8px;
@@ -146,4 +121,31 @@
       }
     }
   }
+}
+.sort_options {
+  @include FontStyle(16px, 600, rgba(0, 0, 0, 0.6));
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+}
+.filter_body {
+  margin-bottom: 20px;
+  & .filter_heading {
+    @include FontStyle(16px, 400, rgba(88, 88, 89, 1));
+    margin-bottom: 10px;
+  }
+  & .ant-checkbox-wrapper {
+    @include FontStyle(14px, normal, rgb(14, 13, 13));
+    cursor: pointer;
+  }
+  & .dates_div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+.filter_actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
