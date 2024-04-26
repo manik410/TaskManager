@@ -1,0 +1,11 @@
+@import "../../index.scss";
+.no_content {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  & .content {
+    @include FontStyle(22px, 600, #051923);
+    text-align: center;
+  }
+}

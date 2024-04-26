@@ -1,41 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import dayjs from "dayjs";
 
 //antd imports
-import {
-  Badge,
-  Button,
-  Checkbox,
-  DatePicker,
-  Input,
-  Popconfirm,
-  Popover,
-  Select,
-  Tag,
-} from "antd";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  FilterFilled,
-  PlusOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
+import { Button, Popconfirm, Select, Tag } from "antd";
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 
 //custom component imports
 import AddTaskComponent from "../AddTask";
-
-//images import
-import NoDataFound from "../../assets/no_data_found.svg";
+import SearchComponent from "../SearchComponent";
+import CountInfo from "../CountInfo";
+import NoDataFound from "../NoDataFound";
+import Filters from "../Filters";
 
 //helper functions imports
 import { addTask } from "../../redux/slice/addTaskSlice";
-import {
-  FilterSvg,
-  Priority_Options,
-  Sort_Options,
-  Task_Status,
-} from "../../helpers/constants";
+import { Task_Count_Category, Task_Status } from "../../helpers/constants";
 
 //css imports
 import "./TaskList.scss";
@@ -75,25 +54,30 @@ const TaskList = () => {
       completed: completedCount,
       to_do: todoCount,
       in_progress: progressCount,
+      total_count: tasks?.length,
     });
     setdata(tasks);
   }, [tasks]);
 
+  //function for resetting the add and edit modal for the task details
   const resetModal = (val) => {
     setStatus("add");
     setTaskId("");
     setModalOpen(val);
   };
 
+  //function for viewing the task
   const viewTask = (id) => {
     setTaskId(id);
     setStatus("edit");
     setModalOpen(true);
   };
 
+  //function for deleting the task
   const deleteTask = (id) =>
     dispatch(addTask(tasks?.filter((task) => task?.task_id !== id)));
 
+  //function for changing the status of the task
   const changeStatus = (id, val) => {
     let currentTaskIndex = tasks?.findIndex((task) => task?.task_id === id);
     let dummyTasks = [...tasks];
@@ -103,11 +87,13 @@ const TaskList = () => {
     dispatch(addTask(dummyTasks));
   };
 
+  //function for searching the task
   const searchTask = (e) => {
     setSearchQuery(e?.target?.value);
     filterData(e?.target?.value, sortValue, appliedFilters);
   };
 
+  //function for handling the change in the filter values
   const changeFilters = (type, val) => {
     let filters = {};
     if (type === "start_date" || type === "end_date") {
@@ -126,17 +112,20 @@ const TaskList = () => {
     setAppliedFilters(filters);
   };
 
+  //function for applying the filters
   const applyFilters = () => {
     setFilterPopoverOpen(false);
     filterData(searchQuery, sortValue, appliedFilters);
   };
 
+  //function for resetting the filters
   const clearFilters = () => {
     setAppliedFilters({});
     setFilterPopoverOpen(false);
     filterData(searchQuery, sortValue, {});
   };
 
+  //function for returning the filter count
   const returnFiltersCount = (appliedFilters) => {
     let count = 0;
     Object.keys(appliedFilters || {})?.forEach((item) => {
@@ -145,6 +134,7 @@ const TaskList = () => {
     return count;
   };
 
+  //helper function for filtering the data on the basis of searching,sorting and filtering
   const filterData = (searchQuery, sortValue, appliedFilters) => {
     if (
       !searchQuery?.trim()?.length &&
@@ -211,6 +201,7 @@ const TaskList = () => {
       setdata(filteredData);
     }
   };
+
   return (
     <div>
       <div className="header">
@@ -234,169 +225,39 @@ const TaskList = () => {
         </div>
       </div>
       <div className="summary_data">
-        <div
-          className="count_box"
-          style={{ borderLeft: "5px solid rgb(66, 165, 245)" }}
-        >
-          <div className="heading_subContent">{tasks?.length || 0}</div>
-          <div className="heading">Total Tasks</div>
-        </div>
-        <div
-          className="count_box"
-          style={{ borderLeft: "5px solid rgb(211, 47, 47)" }}
-        >
-          <div className="heading_subContent">{counts?.to_do || 0}</div>
-          <div className="heading">Tasks not Started Yet</div>
-        </div>
-        <div
-          className="count_box"
-          style={{ borderLeft: "5px solid rgb(255, 152, 0)" }}
-        >
-          <div className="heading_subContent">{counts?.in_progress || 0}</div>
-          <div className="heading">Tasks in Progress</div>
-        </div>
-        <div className="count_box" style={{ borderLeft: "5px solid #4CAF50" }}>
-          <div className="heading_subContent">{counts?.completed || 0}</div>
-          <div className="heading">Completed Tasks</div>
-        </div>
+        {Task_Count_Category?.map((info) => {
+          return (
+            <CountInfo
+              color={info?.color}
+              label={info?.label}
+              key={info?.label}
+              count={counts?.[info?.value]}
+            />
+          );
+        })}
       </div>
       <div className="task_container">
         <div className="task_actions_header">
-          <div className="search_div">
-            <Input
-              disabled={!tasks?.length}
-              value={searchQuery}
-              placeholder="Search Tasks By Title or Description"
-              onChange={(e) => searchTask(e)}
-              suffix={<SearchOutlined style={{ cursor: "pointer" }} />}
-              style={{
-                width: "50%",
-                padding: "8px",
-                border: "1px solid rgba(179,179,171, 0.87)",
-              }}
-            />
-          </div>
-          <div className="filter_sort_div">
-            <Popover
-              content={
-                <>
-                  {Sort_Options?.map((item) => {
-                    return (
-                      <div
-                        key={item?.value}
-                        className="sort_options"
-                        onClick={() => {
-                          setSortValue(item?.value);
-                          setSortPopoverOpen(!sortPopoverOpen);
-                          filterData(searchQuery, item?.value, appliedFilters);
-                        }}
-                      >
-                        {item?.label}
-                      </div>
-                    );
-                  })}
-                </>
-              }
-              placement="bottom"
-              trigger="click"
-              open={sortPopoverOpen}
-              onOpenChange={() => setSortPopoverOpen(!sortPopoverOpen)}
-            >
-              <Button className="sort_button" disabled={!tasks?.length}>
-                <FilterSvg disabled={!tasks?.length} />
-                Sort By
-              </Button>
-            </Popover>
-            <Badge
-              count={
-                !filterPopoverOpen ? returnFiltersCount(appliedFilters) : 0
-              }
-              size="small"
-            >
-              <Popover
-                content={
-                  <>
-                    <div className="filter_body">
-                      <div className="filter_heading">Task Priority</div>
-                      <Checkbox.Group
-                        options={Priority_Options}
-                        onChange={(val) => changeFilters("priority", val)}
-                        className="checkbox_content"
-                      />
-                    </div>
-                    <div className="filter_body">
-                      <div className="filter_heading">Task Status</div>
-                      <Checkbox.Group
-                        options={Task_Status}
-                        onChange={(val) => changeFilters("status", val)}
-                        className="checkbox_content"
-                      />
-                    </div>
-                    <div className="filter_body">
-                      <div className="filter_heading">Due Date</div>
-                      <div className="dates_div">
-                        <DatePicker
-                          style={{ width: "45%" }}
-                          onChange={(e, val) =>
-                            changeFilters("start_date", val)
-                          }
-                          value={
-                            appliedFilters?.date?.[0]
-                              ? dayjs(appliedFilters?.date?.[0])
-                              : null
-                          }
-                          placeholder="Select Start Date"
-                        />
-                        <DatePicker
-                          style={{ width: "45%" }}
-                          onChange={(e, val) => changeFilters("end_date", val)}
-                          value={
-                            appliedFilters?.date?.[1]
-                              ? dayjs(appliedFilters?.date?.[1])
-                              : null
-                          }
-                          disabledDate={(current) =>
-                            current &&
-                            current <
-                              dayjs(
-                                dayjs(appliedFilters?.date?.[0]).format(
-                                  "YYYY-MM-DD"
-                                )
-                              )
-                          }
-                          disabled={!appliedFilters?.date?.[0]?.length}
-                          placeholder="Select End Date"
-                        />
-                      </div>
-                    </div>
-                    <div className="filter_actions">
-                      <Button size="small" onClick={() => clearFilters()}>
-                        Clear Filters
-                      </Button>
-                      &nbsp;&nbsp;&nbsp;&nbsp;
-                      <Button
-                        size="small"
-                        type="primary"
-                        onClick={() => applyFilters()}
-                      >
-                        Apply Filters
-                      </Button>
-                    </div>
-                  </>
-                }
-                placement="leftTop"
-                trigger="click"
-                open={filterPopoverOpen}
-                onOpenChange={() => setFilterPopoverOpen(!filterPopoverOpen)}
-              >
-                <FilterFilled
-                  className={`filters_badge ${
-                    !tasks?.length ? "disabled_class" : ""
-                  }`}
-                />
-              </Popover>
-            </Badge>
-          </div>
+          <SearchComponent
+            searchQuery={searchQuery}
+            disabled={!tasks?.length}
+            searchTask={searchTask}
+          />
+          <Filters
+            searchQuery={searchQuery}
+            filterPopoverOpen={filterPopoverOpen}
+            setFilterPopoverOpen={setFilterPopoverOpen}
+            appliedFilters={appliedFilters}
+            sortPopoverOpen={sortPopoverOpen}
+            setSortPopoverOpen={setSortPopoverOpen}
+            setSortValue={setSortValue}
+            filterData={filterData}
+            changeFilters={changeFilters}
+            returnFiltersCount={returnFiltersCount}
+            disabled={!tasks?.length}
+            applyFilters={applyFilters}
+            clearFilters={clearFilters}
+          />
         </div>
         {data?.length > 0 ? (
           <div>
@@ -454,15 +315,7 @@ const TaskList = () => {
             })}
           </div>
         ) : (
-          <div className="no_content">
-            <img
-              src={NoDataFound}
-              alt="no data found"
-              height={"300px"}
-              width={"300px"}
-            />
-            <p className="content">No Tasks Added Yet</p>
-          </div>
+          <NoDataFound />
         )}
       </div>
       <AddTaskComponent

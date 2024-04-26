@@ -3,6 +3,17 @@ export const Priority_Options = [
   { value: "Low", label: "Low" },
   { value: "Medium", label: "Medium" },
 ];
+export const Task_Count_Category = [
+  { label: "Total Tasks", value: "total_count", color: "rgb(66, 165, 245)" },
+  { label: "Tasks not Started Yet", value: "to_do", color: "rgb(211, 47, 47)" },
+  {
+    label: "Tasks in Progress",
+    value: "in_progress",
+    color: "rgb(255, 152, 0)",
+  },
+  { label: "Completed Tasks", value: "completed", color: "#4CAF50" },
+];
+
 export const Task_Status = [
   { value: "To Do", label: "To Do" },
   { value: "In Progress", label: "In Progress" },

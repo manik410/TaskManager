@@ -3,6 +3,11 @@
   font-weight: $weight;
   color: $color;
 }
+@mixin FlexStyle($justify, $alignment) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $alignment;
+}
 body {
   margin: 0;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
