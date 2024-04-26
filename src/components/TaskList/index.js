@@ -8,9 +8,7 @@ import {
   Button,
   Checkbox,
   DatePicker,
-  Divider,
   Input,
-  message,
   Popconfirm,
   Popover,
   Select,
@@ -26,6 +24,9 @@ import {
 
 //custom component imports
 import AddTaskComponent from "../AddTask";
+
+//images import
+import NoDataFound from "../../assets/no_data_found.svg";
 
 //helper functions imports
 import { addTask } from "../../redux/slice/addTaskSlice";
@@ -90,9 +91,8 @@ const TaskList = () => {
     setModalOpen(true);
   };
 
-  const deleteTask = (id) => {
+  const deleteTask = (id) =>
     dispatch(addTask(tasks?.filter((task) => task?.task_id !== id)));
-  };
 
   const changeStatus = (id, val) => {
     let currentTaskIndex = tasks?.findIndex((task) => task?.task_id === id);
@@ -124,7 +124,6 @@ const TaskList = () => {
       };
     } else filters = { ...appliedFilters, [type]: val };
     setAppliedFilters(filters);
-    // filterData(searchQuery, sortValue, filters);
   };
 
   const applyFilters = () => {
@@ -455,9 +454,15 @@ const TaskList = () => {
             })}
           </div>
         ) : (
-          <>
-            <p className="no_content">No Tasks Added Yet</p>
-          </>
+          <div className="no_content">
+            <img
+              src={NoDataFound}
+              alt="no data found"
+              height={"300px"}
+              width={"300px"}
+            />
+            <p className="content">No Tasks Added Yet</p>
+          </div>
         )}
       </div>
       <AddTaskComponent

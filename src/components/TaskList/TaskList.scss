@@ -90,11 +90,14 @@
     }
   }
   & .no_content {
-    @include FontStyle(22px, 600, #051923);
     position: absolute;
-    top: 65%;
+    top: 70%;
     left: 50%;
     transform: translate(-50%, -50%);
+    & .content {
+      @include FontStyle(22px, 600, #051923);
+      text-align: center;
+    }
   }
   & .task_body {
     border-radius: 8px;
