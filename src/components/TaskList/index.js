@@ -263,6 +263,7 @@ const TaskList = () => {
         <div className="task_actions_header">
           <div className="search_div">
             <Input
+              disabled={!tasks?.length}
               value={searchQuery}
               placeholder="Search Tasks By Title or Description"
               onChange={(e) => searchTask(e)}
@@ -300,7 +301,11 @@ const TaskList = () => {
               open={sortPopoverOpen}
               onOpenChange={() => setSortPopoverOpen(!sortPopoverOpen)}
             >
-              <Button type="primary" style={{ width: "30%" }}>
+              <Button
+                type="primary"
+                style={{ width: "30%" }}
+                disabled={!tasks?.length}
+              >
                 Sort By
               </Button>
             </Popover>
@@ -386,7 +391,11 @@ const TaskList = () => {
                 open={filterPopoverOpen}
                 onOpenChange={() => setFilterPopoverOpen(!filterPopoverOpen)}
               >
-                <FilterFilled className="filters_badge" />
+                <FilterFilled
+                  className={`filters_badge ${
+                    !tasks?.length ? "disabled_class" : ""
+                  }`}
+                />
               </Popover>
             </Badge>
           </div>
@@ -448,7 +457,7 @@ const TaskList = () => {
           </div>
         ) : (
           <>
-            <p className="no_content">No Tasks Added Yet.</p>
+            <p className="no_content">No Tasks Added Yet</p>
           </>
         )}
       </div>
