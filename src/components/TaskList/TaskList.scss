@@ -3,21 +3,29 @@
   padding: 20px 50px;
   background: #e9f2ff;
   & .content {
-    @include FontStyle(24px, 500, rgba(0, 0, 0, 0.87));
+    @include FontStyle(24px, 700, rgba(0, 0, 0, 0.87));
     margin: 10px 0px;
   }
-  & .sub_content {
-    @include FontStyle(16px, normal, rgba(0, 0, 0, 0.87));
+  & .sub_content_div {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
+    & .sub_content {
+      @include FontStyle(16px, normal, rgba(0, 0, 0, 0.87));
+      width: 75%;
+      line-height: 24px;
+    }
+    & .add_button {
+      padding: 10px 24px;
+      height: auto;
+    }
   }
 }
 .summary_data {
   border-radius: 12px;
   padding: 10px;
-  margin: 30px;
+  margin: 16px 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -26,7 +34,7 @@
     box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px,
       rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;
     border-radius: 4px;
-    padding: 20px 150px 20px 20px;
+    padding: 10px 150px 10px 20px;
     & .heading {
       @include FontStyle(16px, 600, rgba(0, 0, 0, 0.6));
     }
@@ -40,17 +48,19 @@
   }
 }
 .task_container {
-  padding: 20px 50px;
+  padding: 16px;
   margin: 20px;
   border-radius: 12px;
-  min-height: 75vh;
-  max-height: 75vh;
+  min-height: 65vh;
+  max-height: 65vh;
   overflow-y: scroll;
   box-shadow: 0 2.6400001049px 16px 0 #0000001a;
-  .disabled_class {
-    user-select: none;
-    pointer-events: none;
-    opacity: 0.6;
+  & .task_actions_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
   }
   & .filters_div {
     & .content {
@@ -78,11 +88,6 @@
       }
     }
   }
-  & .search_div {
-    & .content {
-      @include FontStyle(18px, 500, rgb(14, 13, 13));
-    }
-  }
   & .sort_div {
     & .content {
       @include FontStyle(18px, 500, rgb(14, 13, 13));
@@ -95,6 +100,7 @@
   & .no_content {
     @include FontStyle(22px, 600, #051923);
     text-align: center;
+    margin: 100px 0px;
   }
   & .action_content {
     display: flex;
@@ -102,19 +108,20 @@
   }
   & .task_body {
     border-radius: 8px;
-    background: #f4f5f7;
+    background: #f1f7fe;
     padding: 10px 20px;
     margin: 12px 0px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     & .task_details {
-      width: 70%;
+      width: 95%;
       & .content {
         @include FontStyle(18px, 600, rgb(14, 13, 13));
         padding: 6px 0px;
         display: flex;
         align-items: center;
+        text-transform: capitalize;
         & .tags {
           text-transform: capitalize;
           margin-left: 14px;
@@ -123,13 +130,14 @@
       & .content_des {
         @include FontStyle(14px, 400, rgba(88, 88, 89, 1));
         padding: 6px 0px;
+        width: 90%;
       }
     }
     & .task_actions {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: 30%;
+      width: 20%;
       & .icon {
         margin-left: 14px;
         font-size: 18px;

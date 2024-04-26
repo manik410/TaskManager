@@ -58,7 +58,6 @@ const AddTaskComponent = ({ modalOpen, setModalOpen, status, taskId }) => {
             if (status === "add") {
               dispatch(
                 addTask([
-                  ...tasks,
                   {
                     task_id: uuidv4(),
                     title: title,
@@ -67,6 +66,7 @@ const AddTaskComponent = ({ modalOpen, setModalOpen, status, taskId }) => {
                     priority: priority,
                     status: "To Do",
                   },
+                  ...tasks,
                 ])
               );
             } else {

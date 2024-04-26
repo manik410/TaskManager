@@ -18,6 +18,8 @@ import {
 import {
   DeleteOutlined,
   EditOutlined,
+  FilterFilled,
+  PlusOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
 
@@ -26,7 +28,7 @@ import AddTaskComponent from "../AddTask";
 
 //helper functions imports
 import { addTask } from "../../redux/slice/addTaskSlice";
-import { Priority_Options, Task_Status } from "../../helpers/constants";
+import { Sort_Options, Task_Status } from "../../helpers/constants";
 
 //css imports
 import "./TaskList.scss";
@@ -198,19 +200,20 @@ const TaskList = () => {
     <div>
       <div className="header">
         <div className="content">Ultimate Task Manager</div>
-        <div className="sub_content">
-          <div>
-            This platform enables users to manage daily tasks efficiently. Users
-            can add, edit, or delete tasks, assign priority, and designate task
-            status. Additionally, they can search and filter tasks based on
-            priority, due date, and completion status.
+        <div className="sub_content_div">
+          <div className="sub_content">
+            You can manage daily tasks by adding, editing, or deleting them.
+            Tasks can be assigned priorities and status. You can also search and
+            filter tasks based on priority, due date, and completion status.
           </div>
           <Button
+            className="add_button"
             type="primary"
             color="#fff"
             size="large"
             onClick={() => setModalOpen(true)}
           >
+            <PlusOutlined />
             Add a New Task
           </Button>
         </div>
@@ -243,7 +246,7 @@ const TaskList = () => {
         </div>
       </div>
       <Row gutter={24} style={{ margin: "0px" }}>
-        <Col className="gutter-row" span={10}>
+        {/* <Col className="gutter-row" span={10}>
           <div className="task_container">
             <div
               className={`search_div ${!tasks?.length ? "disabled_class" : ""}`}
@@ -344,9 +347,43 @@ const TaskList = () => {
               </div>
             </div>
           </div>
-        </Col>
-        <Col className="gutter-row" span={14}>
+        </Col> */}
+        <Col className="gutter-row" span={24}>
           <div className="task_container">
+            <div className="task_actions_header">
+              <Row gutter={24}>
+                <Col className="gutter-row" span={18}>
+                  <Input
+                    value={searchQuery}
+                    placeholder="Search Tasks By Title or Description"
+                    onChange={(e) => searchTask(e)}
+                    suffix={<SearchOutlined style={{ cursor: "pointer" }} />}
+                    style={{
+                      width: "100%",
+                      padding: "8px",
+                      border: "1px solid rgba(179,179,171, 0.87)",
+                    }}
+                  />
+                </Col>
+                <Col className="gutter-row" span={6}>
+                  <Select
+                    style={{ width: "40%" }}
+                    placeholder="Sort By"
+                    options={Sort_Options}
+                    value={sortValue || ""}
+                    allowClear
+                    onChange={(e) => setSortValue(e)}
+                  />
+                  <FilterFilled
+                    style={{
+                      fontSize: "24px",
+                      cursor: "pointer",
+                      color: "#1677ff",
+                    }}
+                  />
+                </Col>
+              </Row>
+            </div>
             {data?.length > 0 ? (
               <div>
                 {data?.map((task) => {
@@ -365,7 +402,7 @@ const TaskList = () => {
                             }
                             className="tags"
                           >
-                            {task?.priority}
+                            {`${task?.priority} Priority`}
                           </Tag>
                         </div>
                         <div className="content_des">{task?.description}</div>
@@ -373,7 +410,7 @@ const TaskList = () => {
                       <div className="task_actions">
                         <Select
                           placeholder="Change Status"
-                          style={{ width: "100%" }}
+                          style={{ width: "75%" }}
                           options={Task_Status}
                           value={task?.status}
                           allowClear
