@@ -2,7 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 //antd imports
-import { Button, Col, Input, Popconfirm, Radio, Row, Select, Tag } from "antd";
+import {
+  Button,
+  Checkbox,
+  Col,
+  DatePicker,
+  Divider,
+  Input,
+  Popconfirm,
+  Radio,
+  Row,
+  Select,
+  Tag,
+} from "antd";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -14,15 +26,17 @@ import AddTaskComponent from "../AddTask";
 
 //helper functions imports
 import { addTask } from "../../redux/slice/addTaskSlice";
-import { Task_Status } from "../../helpers/constants";
+import { Priority_Options, Task_Status } from "../../helpers/constants";
 
 //css imports
 import "./TaskList.scss";
+import dayjs from "dayjs";
 
 const TaskList = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortValue, setSortValue] = useState("");
+  const [appliedFilters, setAppliedFilters] = useState({});
   const [counts, setCounts] = useState({
     to_do: 0,
     in_progress: 0,
@@ -39,52 +53,21 @@ const TaskList = () => {
     let progressCount = 0;
     let completedCount = 0;
     tasks?.forEach((task) => {
-      if (task?.status === "To Do") todoCount += 1;
-      else if (task?.status === "In Progress") progressCount += 1;
-      else completedCount += 1;
+      if (task?.status === "To Do") {
+        todoCount += 1;
+      } else if (task?.status === "In Progress") {
+        progressCount += 1;
+      } else {
+        completedCount += 1;
+      }
     });
     setCounts({
       completed: completedCount,
       to_do: todoCount,
       in_progress: progressCount,
     });
-    if (!searchQuery?.trim()?.length && !sortValue?.trim()?.length)
-      setdata(tasks);
-    else {
-      let filteredData = [];
-      filteredData = tasks?.filter(
-        (task) =>
-          task?.title
-            ?.toLowerCase()
-            .includes(searchQuery?.toLowerCase()?.trim()) ||
-          task?.description
-            ?.toLowerCase()
-            .includes(searchQuery?.toLowerCase()?.trim())
-      );
-      switch (sortValue) {
-        case "priority":
-          filteredData.sort((a, b) => {
-            const priorityOrder = { low: 1, medium: 2, high: 3 };
-            return priorityOrder[b?.priority] - priorityOrder[a?.priority];
-          });
-          break;
-        case "due_date":
-          filteredData.sort(
-            (a, b) => new Date(b?.due_date) - new Date(a?.due_date)
-          );
-          break;
-        case "status":
-          filteredData.sort((a, b) => {
-            const statusOrder = { "To Do": 1, "In Progress": 2, Completed: 3 };
-            return statusOrder[b?.status] - statusOrder[a?.status];
-          });
-          break;
-        default:
-          return filteredData;
-      }
-      setdata(filteredData);
-    }
-  }, [tasks, searchQuery, sortValue]);
+    setdata(tasks);
+  }, [tasks]);
 
   const resetModal = (val) => {
     setStatus("add");
@@ -113,10 +96,104 @@ const TaskList = () => {
 
   const searchTask = (e) => {
     setSearchQuery(e?.target?.value);
-    if (e?.target?.value?.trim()?.length > 3) {
-    }
+    filterData(e?.target?.value, sortValue, appliedFilters);
   };
 
+  const changeFilters = (type, val) => {
+    let filters = {};
+    if (type === "start_date" || type === "end_date") {
+      filters = {
+        ...appliedFilters,
+        date:
+          type === "start_date"
+            ? val
+              ? [val]
+              : []
+            : val
+            ? [appliedFilters?.date?.[0], val]
+            : [appliedFilters?.date?.[0]],
+      };
+    } else filters = { ...appliedFilters, [type]: val };
+    console.log(filters);
+    setAppliedFilters(filters);
+    filterData(searchQuery, sortValue, filters);
+  };
+
+  const returnFiltersCount = (appliedFilters) => {
+    let count = 0;
+    Object.keys(appliedFilters || {})?.forEach((item) => {
+      if (appliedFilters[item]?.length) count = count + 1;
+    });
+    return count;
+  };
+
+  const filterData = (searchQuery, sortValue, appliedFilters) => {
+    console.log(appliedFilters);
+    if (
+      !searchQuery?.trim()?.length &&
+      !sortValue?.trim()?.length &&
+      !returnFiltersCount(appliedFilters)
+    ) {
+      setdata(tasks);
+    } else {
+      let filteredData = tasks;
+      filteredData = tasks?.filter(
+        (task) =>
+          task?.title
+            ?.toLowerCase()
+            .includes(searchQuery?.toLowerCase()?.trim()) ||
+          task?.description
+            ?.toLowerCase()
+            .includes(searchQuery?.toLowerCase()?.trim())
+      );
+      switch (sortValue) {
+        case "priority":
+          filteredData.sort((a, b) => {
+            const priorityOrder = { Low: 1, Medium: 2, High: 3 };
+            return priorityOrder[b?.priority] - priorityOrder[a?.priority];
+          });
+          break;
+        case "due_date":
+          filteredData.sort(
+            (a, b) => new Date(b?.due_date) - new Date(a?.due_date)
+          );
+          break;
+        case "status":
+          filteredData.sort((a, b) => {
+            const statusOrder = { "To Do": 1, "In Progress": 2, Completed: 3 };
+            return statusOrder[b?.status] - statusOrder[a?.status];
+          });
+          break;
+        default:
+          break;
+      }
+      if (returnFiltersCount(appliedFilters)) {
+        filteredData = filteredData?.filter((task) => {
+          if (appliedFilters?.priority && appliedFilters?.priority?.length) {
+            if (!appliedFilters?.priority?.includes(task?.priority))
+              return false;
+          }
+          if (appliedFilters?.status && appliedFilters?.status?.length) {
+            if (!appliedFilters?.status?.includes(task?.status)) return false;
+          }
+          if (appliedFilters?.date && appliedFilters?.date?.length === 2) {
+            const taskDueDate = new Date(task?.due_date).getTime();
+            const startTimestamp = new Date(
+              appliedFilters?.date?.[0]
+            ).getTime();
+            const endTimestamp = new Date(appliedFilters?.date?.[1]).getTime();
+            if (
+              !(taskDueDate >= startTimestamp && taskDueDate <= endTimestamp)
+            ) {
+              return false;
+            }
+          }
+          return true;
+        });
+      }
+      setdata(filteredData);
+    }
+  };
   return (
     <div>
       <div className="header">
@@ -128,7 +205,7 @@ const TaskList = () => {
           on the basis of priority,due date and completion status
         </p>
       </div>
-      <Row gutter={24}>
+      <Row gutter={24} style={{ margin: "0px" }}>
         <Col className="gutter-row" span={10}>
           <div className="task_container">
             <div className="summary_data">
@@ -168,7 +245,9 @@ const TaskList = () => {
                 Add a New Task
               </Button>
             </div>
-            <div className="search_div">
+            <div
+              className={`search_div ${!tasks?.length ? "disabled_class" : ""}`}
+            >
               <p className="content">Search Tasks By Title or Description</p>
               <Input
                 value={searchQuery}
@@ -177,10 +256,16 @@ const TaskList = () => {
                 suffix={<SearchOutlined style={{ cursor: "pointer" }} />}
               />
             </div>
-            <div className="sort_div">
+            <Divider />
+            <div
+              className={`sort_div ${!tasks?.length ? "disabled_class" : ""}`}
+            >
               <p className="content">Sort By</p>
               <Radio.Group
-                onChange={(e) => setSortValue(e?.target?.value)}
+                onChange={(e) => {
+                  setSortValue(e?.target?.value);
+                  filterData(searchQuery, e?.target?.value, appliedFilters);
+                }}
                 value={sortValue}
               >
                 <Radio value={"priority"} className="radio_content">
@@ -193,6 +278,70 @@ const TaskList = () => {
                   Task Status
                 </Radio>
               </Radio.Group>
+            </div>
+            <Divider />
+            <div
+              className={`filters_div ${
+                !tasks?.length ? "disabled_class" : ""
+              }`}
+            >
+              <p className="content">
+                Filters&nbsp;
+                {returnFiltersCount(appliedFilters) ? (
+                  <Tag color="red" className="tags">
+                    {returnFiltersCount(appliedFilters)}
+                  </Tag>
+                ) : null}
+              </p>
+              <div className="filter_body">
+                <div className="filter_heading">Task Priority</div>
+                <Checkbox.Group
+                  options={Priority_Options}
+                  onChange={(val) => changeFilters("priority", val)}
+                  className="checkbox_content"
+                />
+              </div>
+              <div className="filter_body">
+                <div className="filter_heading">Task Status</div>
+                <Checkbox.Group
+                  options={Task_Status}
+                  onChange={(val) => changeFilters("status", val)}
+                  className="checkbox_content"
+                />
+              </div>
+              <div className="filter_body">
+                <div className="filter_heading">Due Date</div>
+                <div className="dates_div">
+                  <DatePicker
+                    style={{ width: "45%" }}
+                    onChange={(e, val) => changeFilters("start_date", val)}
+                    value={
+                      appliedFilters?.date?.[0]
+                        ? dayjs(appliedFilters?.date?.[0])
+                        : null
+                    }
+                    placeholder="Select Start Date"
+                  />
+                  <DatePicker
+                    style={{ width: "45%" }}
+                    onChange={(e, val) => changeFilters("end_date", val)}
+                    value={
+                      appliedFilters?.date?.[1]
+                        ? dayjs(appliedFilters?.date?.[1])
+                        : null
+                    }
+                    disabledDate={(current) =>
+                      current &&
+                      current <
+                        dayjs(
+                          dayjs(appliedFilters?.date?.[0]).format("YYYY-MM-DD")
+                        )
+                    }
+                    disabled={!appliedFilters?.date?.[0]?.length}
+                    placeholder="Select End Date"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </Col>
@@ -208,9 +357,9 @@ const TaskList = () => {
                           {task?.title}
                           <Tag
                             color={
-                              task?.priority === "low"
+                              task?.priority === "Low"
                                 ? "yellow"
-                                : task?.priority === "high"
+                                : task?.priority === "High"
                                 ? "red"
                                 : "green"
                             }

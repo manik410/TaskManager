@@ -1,7 +1,7 @@
 export const Priority_Options = [
-  { value: "high", label: "High" },
-  { value: "low", label: "Low" },
-  { value: "medium", label: "Medium" },
+  { value: "High", label: "High" },
+  { value: "Low", label: "Low" },
+  { value: "Medium", label: "Medium" },
 ];
 export const Task_Status = [
   { value: "To Do", label: "To Do" },
