@@ -1,0 +1,96 @@
+@import "../../index.scss";
+.header {
+  background: #1e7cff;
+  padding: 20px 50px;
+  & .content {
+    @include FontStyle(32px, 500, #fff);
+  }
+  & .sub_content {
+    @include FontStyle(18px, normal, #fff);
+  }
+}
+.task_container {
+  padding: 20px 50px;
+  margin: 20px;
+  border-radius: 12px;
+  min-height: 60vh;
+  max-height: 60vh;
+  overflow-y: scroll;
+  box-shadow: 0 2.6400001049px 16px 0 #0000001a;
+  & .summary_data {
+    border-radius: 12px;
+    background: #f4f5f7;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    & .tags {
+      text-transform: capitalize;
+    }
+    & .content {
+      @include FontStyle(16px, 400, rgb(14, 13, 13));
+    }
+    & .highlight {
+      @include FontStyle(16px, 600, #1677ff);
+    }
+  }
+  & .search_div {
+    & .content {
+      @include FontStyle(18px, 500, rgb(14, 13, 13));
+    }
+  }
+  & .sort_div {
+    & .content {
+      @include FontStyle(18px, 500, rgb(14, 13, 13));
+    }
+    & .radio_content {
+      @include FontStyle(16px, normal, rgb(14, 13, 13));
+      cursor: pointer;
+    }
+  }
+  & .no_content {
+    @include FontStyle(22px, 600, #051923);
+    text-align: center;
+  }
+  & .action_content {
+    display: flex;
+    justify-content: center;
+  }
+  & .task_body {
+    border-radius: 8px;
+    background: #f4f5f7;
+    padding: 10px 20px;
+    margin: 12px 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    & .task_details {
+      width: 70%;
+      & .content {
+        @include FontStyle(18px, 600, rgb(14, 13, 13));
+        padding: 6px 0px;
+        display: flex;
+        align-items: center;
+        & .tags {
+          text-transform: capitalize;
+          margin-left: 14px;
+        }
+      }
+      & .content_des {
+        @include FontStyle(14px, 400, rgba(88, 88, 89, 1));
+        padding: 6px 0px;
+      }
+    }
+    & .task_actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 30%;
+      & .icon {
+        margin-left: 14px;
+        font-size: 18px;
+        cursor: pointer;
+      }
+    }
+  }
+}
