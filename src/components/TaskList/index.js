@@ -197,54 +197,54 @@ const TaskList = () => {
   return (
     <div>
       <div className="header">
-        <p className="content">Ultimate Task Manager</p>
-        <p className="sub_content">
-          Here you can add your daily tasks,edit or delete an already existing
-          task. Also you can assign priority to tasks.You can also assign status
-          to the tasks. Along with this you can also search and filter the tasks
-          on the basis of priority,due date and completion status
-        </p>
+        <div className="content">Ultimate Task Manager</div>
+        <div className="sub_content">
+          <div>
+            This platform enables users to manage daily tasks efficiently. Users
+            can add, edit, or delete tasks, assign priority, and designate task
+            status. Additionally, they can search and filter tasks based on
+            priority, due date, and completion status.
+          </div>
+          <Button
+            type="primary"
+            color="#fff"
+            size="large"
+            onClick={() => setModalOpen(true)}
+          >
+            Add a New Task
+          </Button>
+        </div>
+      </div>
+      <div className="summary_data">
+        <div
+          className="count_box"
+          style={{ borderLeft: "5px solid rgb(66, 165, 245)" }}
+        >
+          <div className="heading_subContent">{tasks?.length || 0}</div>
+          <div className="heading">Total Tasks</div>
+        </div>
+        <div
+          className="count_box"
+          style={{ borderLeft: "5px solid rgb(211, 47, 47)" }}
+        >
+          <div className="heading_subContent">{counts?.to_do || 0}</div>
+          <div className="heading">Tasks not Started Yet</div>
+        </div>
+        <div
+          className="count_box"
+          style={{ borderLeft: "5px solid rgb(255, 152, 0)" }}
+        >
+          <div className="heading_subContent">{counts?.in_progress || 0}</div>
+          <div className="heading">Tasks in Progress</div>
+        </div>
+        <div className="count_box" style={{ borderLeft: "5px solid #4CAF50" }}>
+          <div className="heading_subContent">{counts?.completed || 0}</div>
+          <div className="heading">Completed Tasks</div>
+        </div>
       </div>
       <Row gutter={24} style={{ margin: "0px" }}>
         <Col className="gutter-row" span={10}>
           <div className="task_container">
-            <div className="summary_data">
-              <div>
-                <p className="content">
-                  Total Tasks-&nbsp;
-                  <span className="highlight">{tasks?.length || 0}</span>
-                </p>
-                <p className="content">
-                  Tasks not Started Yet-&nbsp;{" "}
-                  <span className="highlight">{counts?.to_do || 0}</span>
-                </p>
-                <p className="content">
-                  Tasks in Progress-&nbsp;
-                  <span className="highlight">{counts?.in_progress || 0}</span>
-                </p>
-                <p className="content">
-                  Completed Tasks-&nbsp;
-                  <span className="highlight">{counts?.completed || 0}</span>
-                </p>
-                {sortValue && (
-                  <Tag
-                    className="tags"
-                    color="orange"
-                    closable
-                    onClose={() => setSortValue("")}
-                  >
-                    Sorted By: {sortValue?.replaceAll("_", " ")}
-                  </Tag>
-                )}
-              </div>
-              <Button
-                type="primary"
-                color="#2db7f5"
-                onClick={() => setModalOpen(true)}
-              >
-                Add a New Task
-              </Button>
-            </div>
             <div
               className={`search_div ${!tasks?.length ? "disabled_class" : ""}`}
             >
