@@ -29,6 +29,7 @@ import AddTaskComponent from "../AddTask";
 //helper functions imports
 import { addTask } from "../../redux/slice/addTaskSlice";
 import {
+  FilterSvg,
   Priority_Options,
   Sort_Options,
   Task_Status,
@@ -302,6 +303,7 @@ const TaskList = () => {
               onOpenChange={() => setSortPopoverOpen(!sortPopoverOpen)}
             >
               <Button className="sort_button" disabled={!tasks?.length}>
+                <FilterSvg />
                 Sort By
               </Button>
             </Popover>

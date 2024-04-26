@@ -73,6 +73,9 @@
         background: #fff;
         color: #4096ff;
         border-color: #4096ff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
       }
       & .sort_button:disabled {
         border-color: rgba(0, 0, 0, 0.25) !important;
