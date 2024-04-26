@@ -6,18 +6,18 @@ import { Button, Col, Input, Popconfirm, Radio, Row, Select, Tag } from "antd";
 import {
   DeleteOutlined,
   EditOutlined,
-  EyeOutlined,
-  QuestionCircleOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
 
 //custom component imports
 import AddTaskComponent from "../AddTask";
 
-//css imports
-import "./TaskList.scss";
+//helper functions imports
 import { addTask } from "../../redux/slice/addTaskSlice";
 import { Task_Status } from "../../helpers/constants";
+
+//css imports
+import "./TaskList.scss";
 
 const TaskList = () => {
   const [modalOpen, setModalOpen] = useState(false);
