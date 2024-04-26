@@ -301,7 +301,7 @@ const TaskList = () => {
               open={sortPopoverOpen}
               onOpenChange={() => setSortPopoverOpen(!sortPopoverOpen)}
             >
-              <Button style={{ width: "30%" }} disabled={!tasks?.length}>
+              <Button className="sort_button" disabled={!tasks?.length}>
                 Sort By
               </Button>
             </Popover>
