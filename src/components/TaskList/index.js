@@ -8,6 +8,7 @@ import {
   Button,
   Checkbox,
   DatePicker,
+  Divider,
   Input,
   message,
   Popconfirm,
@@ -303,7 +304,7 @@ const TaskList = () => {
               onOpenChange={() => setSortPopoverOpen(!sortPopoverOpen)}
             >
               <Button className="sort_button" disabled={!tasks?.length}>
-                <FilterSvg />
+                <FilterSvg disabled={!tasks?.length} />
                 Sort By
               </Button>
             </Popover>

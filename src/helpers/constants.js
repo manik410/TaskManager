@@ -13,7 +13,7 @@ export const Sort_Options = [
   { value: "due_date", label: "Due Date" },
   { value: "status", label: "Status" },
 ];
-export const FilterSvg = () => {
+export const FilterSvg = ({ disabled }) => {
   return (
     <svg
       width="18"
@@ -24,7 +24,7 @@ export const FilterSvg = () => {
     >
       <path
         d="M3 18H9V16H3V18ZM3 6V8H21V6H3ZM3 13H15V11H3V13Z"
-        fill="#4096ff"
+        fill={disabled ? "rgba(0, 0, 0, 0.25)" : "#4096ff"}
       />
     </svg>
   );
