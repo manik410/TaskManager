@@ -5,10 +5,16 @@ import "./CountInfo.scss";
 
 const CountInfo = ({ label, count, color }) => {
   return (
-    <div className="count_box" style={{ borderLeft: `5px solid ${color}` }}>
-      <div className="heading_subContent">{count || 0}</div>
-      <div className="heading">{label}</div>
-    </div>
+    <section
+      className="count_box"
+      style={{ borderLeft: `5px solid ${color}` }}
+      aria-label={label}
+    >
+      <div className="heading_subContent" aria-hidden="true">
+        {count || 0}
+      </div>
+      <h2 className="heading">{label}</h2>
+    </section>
   );
 };
 export default CountInfo;

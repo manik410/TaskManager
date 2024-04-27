@@ -208,6 +208,7 @@ const TaskList = () => {
     return (
       <div className="task_actions">
         <Select
+          aria-label="Status of Task"
           size={mobile ? "small" : ""}
           placeholder="Change Status"
           style={{ width: mobile ? "70%" : "75%" }}
@@ -216,6 +217,7 @@ const TaskList = () => {
           onChange={(e) => changeStatus(task?.task_id, e)}
         />
         <EditOutlined
+          role="button"
           className="icon"
           onClick={() => viewTask(task?.task_id)}
           style={{ color: "#1e7cff" }}
@@ -228,14 +230,18 @@ const TaskList = () => {
           okText="Confirm"
           cancelText="Cancel"
         >
-          <DeleteOutlined className="icon" style={{ color: "#f75555" }} />
+          <DeleteOutlined
+            role="button"
+            className="icon"
+            style={{ color: "#f75555" }}
+          />
         </Popconfirm>
       </div>
     );
   };
 
   return (
-    <div>
+    <div role="main">
       <div className="header">
         <div className="content">Ultimate Task Manager</div>
         <div className="sub_content_div">

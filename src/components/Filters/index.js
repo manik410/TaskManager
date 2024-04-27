@@ -43,6 +43,7 @@ const Filters = ({
                 <div
                   key={item?.value}
                   className="sort_options"
+                  role="button"
                   onClick={() => {
                     setSortValue(item?.value);
                     setSortPopoverOpen(!sortPopoverOpen);
@@ -64,6 +65,7 @@ const Filters = ({
           className="sort_button"
           disabled={disabled}
           size={mobile ? "small" : ""}
+          aria-haspopup="true"
         >
           <FilterSvg
             disabled={disabled}
@@ -76,6 +78,7 @@ const Filters = ({
       <Badge
         count={!filterPopoverOpen ? returnFiltersCount(appliedFilters) : 0}
         size="small"
+        aria-label="Filter Badge"
       >
         <Popover
           content={
@@ -150,6 +153,8 @@ const Filters = ({
           onOpenChange={() => setFilterPopoverOpen(!filterPopoverOpen)}
         >
           <FilterFilled
+            role="button"
+            aria-haspopup="true"
             className={`filters_badge ${disabled ? "disabled_class" : ""}`}
           />
         </Popover>

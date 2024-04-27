@@ -30,18 +30,23 @@ const AddTaskComponent = ({ modalOpen, setModalOpen, status, taskId }) => {
 
   useEffect(() => {
     if (status === "add") {
-      setFormValues({
-        title: "",
-        description: "",
-        due_date: "",
-        priority: "",
-        status: "",
-        task_id: "",
-      });
+      resetValues();
     } else {
       setFormValues(tasks?.find((task) => task?.task_id === taskId));
     }
   }, [modalOpen]);
+
+  //helper function for resetting the values
+  const resetValues = () => {
+    setFormValues({
+      title: "",
+      description: "",
+      due_date: "",
+      priority: "",
+      status: "",
+      task_id: "",
+    });
+  };
 
   //function for handling the field change values
   const onChange = (e, name) => {
@@ -95,6 +100,9 @@ const AddTaskComponent = ({ modalOpen, setModalOpen, status, taskId }) => {
       open={modalOpen}
       onOk={addEditTasks}
       onCancel={() => setModalOpen(false)}
+      aria-labelledby={
+        status === "add" ? "addTaskModalTitle" : "editTaskModalTitle"
+      }
     >
       <Row>
         <Col className="field-row" span={24}>
@@ -103,6 +111,7 @@ const AddTaskComponent = ({ modalOpen, setModalOpen, status, taskId }) => {
             value={formValues?.title}
             placeholder="Enter Title"
             onChange={(e) => onChange(e, "title")}
+            aria-label="Title"
           />
         </Col>
         <Col className="field-row" span={24}>
@@ -111,6 +120,7 @@ const AddTaskComponent = ({ modalOpen, setModalOpen, status, taskId }) => {
             placeholder="Enter Description"
             value={formValues?.description}
             onChange={(e) => onChange(e, "description")}
+            aria-label="Description"
           />
         </Col>
         <Col className="field-row" span={24}>
@@ -119,6 +129,7 @@ const AddTaskComponent = ({ modalOpen, setModalOpen, status, taskId }) => {
             onChange={(e, val) => onChange(val, "due_date")}
             value={formValues?.due_date ? dayjs(formValues?.due_date) : null}
             placeholder="Select Due Date"
+            aria-label="Due Date"
           />
         </Col>
         <Col className="field-row" span={24}>
@@ -129,6 +140,7 @@ const AddTaskComponent = ({ modalOpen, setModalOpen, status, taskId }) => {
             value={formValues?.priority || null}
             allowClear
             onChange={(e) => onChange(e, "priority")}
+            aria-label="Priority"
           />
         </Col>
       </Row>

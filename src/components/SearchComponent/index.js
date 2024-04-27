@@ -11,7 +11,7 @@ import "./SearchComponent.scss";
 const SearchComponent = ({ searchQuery, searchTask, disabled }) => {
   const { mobile } = useSelector((state) => state?.config);
   return (
-    <div className="search_div">
+    <div className="search_div" role="search">
       <Input
         disabled={disabled}
         value={searchQuery}
@@ -23,6 +23,7 @@ const SearchComponent = ({ searchQuery, searchTask, disabled }) => {
           padding: mobile ? "4px" : "8px",
           border: "1px solid rgba(179,179,171, 0.87)",
         }}
+        aria-label="Search Tasks"
       />
     </div>
   );
