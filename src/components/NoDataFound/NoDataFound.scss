@@ -1,16 +1,10 @@
 @import "../../index.scss";
 .no_content {
-  position: absolute;
-  top: 70%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  & .no_data_img {
+    @include FlexStyle(center, center);
+  }
   & .content {
     @include FontStyle(22px, 600, #051923);
     text-align: center;
-  }
-}
-@media screen and (max-width: 767px) {
-  .no_content {
-    top: 105%;
   }
 }

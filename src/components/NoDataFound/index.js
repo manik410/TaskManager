@@ -12,12 +12,14 @@ const NoDataFound = () => {
   const { mobile } = useSelector((state) => state?.config);
   return (
     <div className="no_content" role="region" aria-label="No Tasks Added Yet">
-      <img
-        src={mobile ? NoDataFoundMobileImg : NoDataFoundImg}
-        alt="No data found"
-        height={"300px"}
-        width={"300px"}
-      />
+      <div className="no_data_img">
+        <img
+          src={mobile ? NoDataFoundMobileImg : NoDataFoundImg}
+          alt="No data found"
+          height={"300px"}
+          width={"300px"}
+        />
+      </div>
       <p className="content">No Tasks Added Yet</p>
     </div>
   );

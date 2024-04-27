@@ -60,7 +60,9 @@ const AddTaskComponent = ({ modalOpen, setModalOpen, status, taskId }) => {
     const { title, description, due_date, priority } = formValues;
     if (title?.length) {
       if (description?.length) {
-        if (dayjs(due_date) > dayjs(new Date())) {
+        if (
+          dayjs(due_date).startOf("day") >= dayjs(new Date()).startOf("day")
+        ) {
           if (priority?.length) {
             if (status === "add") {
               dispatch(
@@ -116,6 +118,7 @@ const AddTaskComponent = ({ modalOpen, setModalOpen, status, taskId }) => {
         </Col>
         <Col className="field-row" span={24}>
           <TextArea
+            maxLength={275}
             rows={4}
             placeholder="Enter Description"
             value={formValues?.description}
