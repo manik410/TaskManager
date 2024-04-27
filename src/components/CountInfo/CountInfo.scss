@@ -5,6 +5,7 @@
     rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;
   border-radius: 4px;
   padding: 10px 150px 10px 20px;
+
   & .heading {
     @include FontStyle(16px, 600, rgba(0, 0, 0, 0.6));
   }
@@ -13,8 +14,15 @@
     margin-bottom: 10px;
   }
 }
-@media screen and (max-width: 767px) {
+@media (max-width: 768px) {
   .count_box {
-    margin-bottom: 16px;
+    padding: 10px;
+    margin: 10px 15px 10px 0px;
+    & .heading {
+      font-size: 12px;
+    }
+    & .heading_subContent {
+      font-size: 22px;
+    }
   }
 }

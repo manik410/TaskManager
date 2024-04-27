@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 //antd imports
-import { Button, Popconfirm, Select, Tag } from "antd";
+import { Button, Col, Popconfirm, Row, Select, Tag } from "antd";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 
 //custom component imports
@@ -270,16 +270,33 @@ const TaskList = () => {
         </div>
       </div>
       <div className="summary_data">
-        {Task_Count_Category?.map((info) => {
-          return (
-            <CountInfo
-              color={info?.color}
-              label={info?.label}
-              key={info?.label}
-              count={counts?.[info?.value]}
-            />
-          );
-        })}
+        {mobile ? (
+          <Row>
+            {Task_Count_Category?.map((info) => {
+              return (
+                <Col span={12}>
+                  <CountInfo
+                    color={info?.color}
+                    label={info?.label}
+                    key={info?.label}
+                    count={counts?.[info?.value]}
+                  />
+                </Col>
+              );
+            })}
+          </Row>
+        ) : (
+          Task_Count_Category?.map((info) => {
+            return (
+              <CountInfo
+                color={info?.color}
+                label={info?.label}
+                key={info?.label}
+                count={counts?.[info?.value]}
+              />
+            );
+          })
+        )}
       </div>
       <div className="task_container">
         <div className="task_actions_header">
