@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector } from "react-redux";
+
 //antd imports
 import { Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
@@ -7,6 +9,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import "./SearchComponent.scss";
 
 const SearchComponent = ({ searchQuery, searchTask, disabled }) => {
+  const { mobile } = useSelector((state) => state?.config);
   return (
     <div className="search_div">
       <Input
@@ -16,8 +19,8 @@ const SearchComponent = ({ searchQuery, searchTask, disabled }) => {
         onChange={(e) => searchTask(e)}
         suffix={<SearchOutlined style={{ cursor: "pointer" }} />}
         style={{
-          width: "50%",
-          padding: "8px",
+          width: mobile ? "100%" : "50%",
+          padding: mobile ? "4px" : "8px",
           border: "1px solid rgba(179,179,171, 0.87)",
         }}
       />

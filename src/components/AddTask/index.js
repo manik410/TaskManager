@@ -43,12 +43,14 @@ const AddTaskComponent = ({ modalOpen, setModalOpen, status, taskId }) => {
     }
   }, [modalOpen]);
 
+  //function for handling the field change values
   const onChange = (e, name) => {
     if (name === "due_date") setFormValues({ ...formValues, [name]: e });
     else if (name === "priority") setFormValues({ ...formValues, [name]: e });
     else setFormValues({ ...formValues, [name]: e?.target?.value });
   };
 
+  //function for adding and editing the tasks
   const addEditTasks = () => {
     const { title, description, due_date, priority } = formValues;
     if (title?.length) {
@@ -97,6 +99,7 @@ const AddTaskComponent = ({ modalOpen, setModalOpen, status, taskId }) => {
       <Row>
         <Col className="field-row" span={24}>
           <Input
+            maxLength={50}
             value={formValues?.title}
             placeholder="Enter Title"
             onChange={(e) => onChange(e, "title")}

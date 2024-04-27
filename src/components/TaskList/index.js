@@ -35,6 +35,7 @@ const TaskList = () => {
   const [taskId, setTaskId] = useState("");
   const [data, setdata] = useState([]);
   const { tasks } = useSelector((state) => state?.tasks);
+  const { mobile } = useSelector((state) => state?.config);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -202,6 +203,37 @@ const TaskList = () => {
     }
   };
 
+  //helper function for returing the task actions on the UI.
+  const taskActions = (task) => {
+    return (
+      <div className="task_actions">
+        <Select
+          size={mobile ? "small" : ""}
+          placeholder="Change Status"
+          style={{ width: mobile ? "70%" : "75%" }}
+          options={Task_Status}
+          value={task?.status}
+          onChange={(e) => changeStatus(task?.task_id, e)}
+        />
+        <EditOutlined
+          className="icon"
+          onClick={() => viewTask(task?.task_id)}
+          style={{ color: "#1e7cff" }}
+        />
+        <Popconfirm
+          title="Delete the task"
+          description="Are you sure to delete this task?"
+          onConfirm={() => deleteTask(task?.task_id)}
+          placement="left"
+          okText="Confirm"
+          cancelText="Cancel"
+        >
+          <DeleteOutlined className="icon" style={{ color: "#f75555" }} />
+        </Popconfirm>
+      </div>
+    );
+  };
+
   return (
     <div>
       <div className="header">
@@ -212,16 +244,23 @@ const TaskList = () => {
             Tasks can be assigned priorities and status. You can also search and
             filter tasks based on priority, due date, and completion status.
           </div>
-          <Button
-            className="add_button"
-            type="primary"
-            color="#fff"
-            size="large"
-            onClick={() => setModalOpen(true)}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: mobile ? "center" : "",
+            }}
           >
-            <PlusOutlined />
-            Add a New Task
-          </Button>
+            <Button
+              className="add_button"
+              type="primary"
+              color="#fff"
+              size={mobile ? "small" : "large"}
+              onClick={() => setModalOpen(true)}
+            >
+              <PlusOutlined />
+              Add a New Task
+            </Button>
+          </div>
         </div>
       </div>
       <div className="summary_data">
@@ -266,50 +305,26 @@ const TaskList = () => {
                 <div className="task_body" key={task?.task_id}>
                   <div className="task_details">
                     <div className="content">
-                      {task?.title}
-                      <Tag
-                        color={
-                          task?.priority === "Low"
-                            ? "yellow"
-                            : task?.priority === "High"
-                            ? "red"
-                            : "green"
-                        }
-                        className="tags"
-                      >
-                        {`${task?.priority} Priority`}
-                      </Tag>
+                      <div className="title_div">
+                        <div className="title">{task?.title}</div>
+                        <Tag
+                          color={
+                            task?.priority === "Low"
+                              ? "yellow"
+                              : task?.priority === "High"
+                              ? "red"
+                              : "green"
+                          }
+                          className="tags"
+                        >
+                          {`${task?.priority} Priority`}
+                        </Tag>
+                      </div>
+                      {mobile && taskActions(task)}
                     </div>
                     <div className="content_des">{task?.description}</div>
                   </div>
-                  <div className="task_actions">
-                    <Select
-                      placeholder="Change Status"
-                      style={{ width: "75%" }}
-                      options={Task_Status}
-                      value={task?.status}
-                      allowClear
-                      onChange={(e) => changeStatus(task?.task_id, e)}
-                    />
-                    <EditOutlined
-                      className="icon"
-                      onClick={() => viewTask(task?.task_id)}
-                      style={{ color: "#1e7cff" }}
-                    />
-                    <Popconfirm
-                      title="Delete the task"
-                      description="Are you sure to delete this task?"
-                      onConfirm={() => deleteTask(task?.task_id)}
-                      placement="left"
-                      okText="Confirm"
-                      cancelText="Cancel"
-                    >
-                      <DeleteOutlined
-                        className="icon"
-                        style={{ color: "#f75555" }}
-                      />
-                    </Popconfirm>
-                  </div>
+                  {!mobile && taskActions(task)}
                 </div>
               );
             })}

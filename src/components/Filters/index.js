@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 
 //antd imports
@@ -31,6 +32,7 @@ const Filters = ({
   applyFilters,
   clearFilters,
 }) => {
+  const { mobile } = useSelector((state) => state?.config);
   return (
     <div className="filter_sort_div">
       <Popover
@@ -58,8 +60,16 @@ const Filters = ({
         open={sortPopoverOpen}
         onOpenChange={() => setSortPopoverOpen(!sortPopoverOpen)}
       >
-        <Button className="sort_button" disabled={disabled}>
-          <FilterSvg disabled={disabled} />
+        <Button
+          className="sort_button"
+          disabled={disabled}
+          size={mobile ? "small" : ""}
+        >
+          <FilterSvg
+            disabled={disabled}
+            width={mobile ? 14 : 18}
+            height={mobile ? 14 : 18}
+          />
           Sort By
         </Button>
       </Popover>
@@ -91,7 +101,7 @@ const Filters = ({
                 <div className="dates_div">
                   <DatePicker
                     style={{ width: "45%" }}
-                    onChange={(e, val) => changeFilters("start_date", val)}
+                    onChange={(_, val) => changeFilters("start_date", val)}
                     value={
                       appliedFilters?.date?.[0]
                         ? dayjs(appliedFilters?.date?.[0])

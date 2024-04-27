@@ -1,3 +1,6 @@
+import { setMobile } from "../redux/slice/systemConfig";
+import { store } from "../redux/store";
+
 export const Priority_Options = [
   { value: "High", label: "High" },
   { value: "Low", label: "Low" },
@@ -24,11 +27,11 @@ export const Sort_Options = [
   { value: "due_date", label: "Due Date" },
   { value: "status", label: "Status" },
 ];
-export const FilterSvg = ({ disabled }) => {
+export const FilterSvg = ({ disabled, width, height }) => {
   return (
     <svg
-      width="18"
-      height="18"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -39,4 +42,14 @@ export const FilterSvg = ({ disabled }) => {
       />
     </svg>
   );
+};
+//helper function for detecting the screen
+export const handleResize = () => {
+  if (
+    window?.navigator?.userAgent?.match(
+      /(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i
+    )
+  )
+    store.dispatch(setMobile(true));
+  else store.dispatch(setMobile(false));
 };
