@@ -246,7 +246,7 @@ const TaskList = () => {
     if (noOfDays <= 7) {
       return { colour: "red", value: `${noOfDays} days` };
     } else if (noOfDays > 7 && noOfDays <= 31) {
-      return { colour: "amber", value: `${noOfDays / 7} weeks` };
+      return { colour: "amber", value: `${Math.floor(noOfDays / 7)} weeks` };
     } else {
       return { colour: "green", value: `${Math.floor(noOfDays / 30)} months` };
     }
