@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
 
 //antd imports
 import { Button, Col, Popconfirm, Row, Select, Tag } from "antd";
@@ -240,6 +241,40 @@ const TaskList = () => {
     );
   };
 
+  const calculateDays = (date) => {
+    let noOfDays = moment(date).diff(new Date(), "days");
+    if (noOfDays <= 7) {
+      return { colour: "red", value: `${noOfDays} days` };
+    } else if (noOfDays > 7 && noOfDays <= 31) {
+      return { colour: "amber", value: `${noOfDays / 7} weeks` };
+    } else {
+      return { colour: "green", value: `${Math.floor(noOfDays / 30)} months` };
+    }
+  };
+  const generateTask = (title) => {
+    if (searchQuery) {
+      let highlightedTitle = [];
+      let firstIndex = title.indexOf(searchQuery);
+      let lastIndex = firstIndex + searchQuery.length;
+
+      for (let i = 0; i < title.length; i++) {
+        if (i >= firstIndex && i < lastIndex) {
+          highlightedTitle.push(
+            <span key={i} style={{ background: "red", color: "#fff" }}>
+              {title[i]}
+            </span>
+          );
+        } else {
+          highlightedTitle.push(title[i]);
+        }
+      }
+
+      return <div className="title">{highlightedTitle}</div>;
+    } else {
+      return <div className="title">{title}</div>;
+    }
+  };
+
   return (
     <div role="main">
       <div className="header">
@@ -329,7 +364,7 @@ const TaskList = () => {
                   <div className="task_details">
                     <div className="content">
                       <div className="title_div">
-                        <div className="title">{task?.title}</div>
+                        {generateTask(task?.title)}
                         <Tag
                           color={
                             task?.priority === "Low"
@@ -342,6 +377,13 @@ const TaskList = () => {
                         >
                           {`${task?.priority} Priority`}
                         </Tag>
+                        <Tag
+                          style={{
+                            color: calculateDays(task?.due_date)?.colour,
+                          }}
+                        >{`Due in ${
+                          calculateDays(task?.due_date)?.value
+                        }`}</Tag>
                       </div>
                       {mobile && taskActions(task)}
                     </div>
