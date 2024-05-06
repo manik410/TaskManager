@@ -254,7 +254,7 @@ const TaskList = () => {
   const generateTask = (title) => {
     if (searchQuery) {
       let highlightedTitle = [];
-      let firstIndex = title.indexOf(searchQuery);
+      let firstIndex = title.toLowerCase().indexOf(searchQuery.toLowerCase());
       let lastIndex = firstIndex + searchQuery.length;
 
       for (let i = 0; i < title.length; i++) {

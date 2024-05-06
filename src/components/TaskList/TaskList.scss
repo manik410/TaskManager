@@ -59,7 +59,6 @@
           align-items: center;
           & .title {
             @include FontStyle(18px, 600, rgb(14, 13, 13));
-            text-transform: capitalize;
           }
         }
       }
