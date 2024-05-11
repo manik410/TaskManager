@@ -45,7 +45,7 @@
       }
     }
     & .status_details {
-      @include FlexStyle(space-between, center);
+      @include FlexStyle(flex-start, center);
       background: #e9f2ff;
       width: 56%;
       padding: 20px 10px;

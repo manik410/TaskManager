@@ -121,7 +121,8 @@ const GroupList = () => {
     for (let i = parseInt(min); i <= parseInt(max); i++) {
       UI.push(
         <p key={`status_${i}`} style={{ textTransform: "capitalize" }}>
-          {`(${i})-${data?.find((it) => it?.id === i)?.completed}`}&nbsp;
+          {`(${i})-${data?.find((it) => it?.id === i)?.completed}`}
+          &nbsp;&nbsp;&nbsp;&nbsp;
         </p>
       );
     }
