@@ -49,7 +49,15 @@ const GroupList = () => {
       message.error("You can only group upto at max 10 tasks");
       return;
     }
-    dispatch(addGroupData({ ...groups, [newKey]: { min: "", max: "" } }));
+    dispatch(
+      addGroupData({
+        ...groups,
+        [newKey]: {
+          min: newKey === 1 ? "1" : "",
+          max: newKey === 1 ? "10" : "",
+        },
+      })
+    );
   };
 
   //helper function to delete the group
