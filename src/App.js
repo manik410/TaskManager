@@ -1,13 +1,13 @@
 import React from "react";
 
 //custom component imports
-import TaskList from "./components/TaskList";
+import GroupList from "./components/GroupList";
 
 //css imports
 import "./index.scss";
 
 const App = () => {
-  return <TaskList />;
+  return <GroupList />;
 };
 
 export default App;

@@ -7,12 +7,12 @@ import { DeleteOutlined } from "@ant-design/icons";
 
 //helper functions imports
 import { addGroupData } from "../../redux/slice/addGroupSlice";
-import { checkSequenceAndCoverage } from "../../helpers/constants";
+import { API_URL, checkSequenceAndCoverage } from "../../helpers/constants";
 
 //css imports
-import "./TaskList.scss";
+import "./GroupList.scss";
 
-const TaskList = () => {
+const GroupList = () => {
   const [loading, setLoading] = useState(false);
   const [status, setShowStatus] = useState(false);
   const [data, setData] = useState([]);
@@ -45,7 +45,7 @@ const TaskList = () => {
       Object.keys(groups || {})[Object.keys(groups || {})?.length - 1]
     );
     let newKey = lastKey ? lastKey + 1 : 1;
-    if (Number(groups[lastKey]?.max) === 10) {
+    if (Number(groups[lastKey]?.max) >= 10) {
       message.error("You can only group upto at max 10 tasks");
       return;
     }
@@ -70,7 +70,7 @@ const TaskList = () => {
       max = Number(max) || 0;
       if (min === 0 || min >= max)
         errorData[item] = { ...errorData[item], min: true };
-      if (max > 10 && max <= min)
+      if (max > 10 || max <= min)
         errorData[item] = { ...errorData[item], max: true };
       if (min >= 1 && max <= 10 && min < max)
         errorData[item] = { ...errorData[item], min: false, max: false };
@@ -88,7 +88,7 @@ const TaskList = () => {
       Object.keys(groups || {})?.forEach((item) => {
         let { min, max } = groups[item];
         for (let i = parseInt(min); i <= parseInt(max); i++) {
-          apiUrls.push(` https://jsonplaceholder.typicode.com/todos/${i}`);
+          apiUrls.push(`${API_URL}${i}`);
         }
       });
       const promises = apiUrls?.map((url) =>
@@ -126,7 +126,7 @@ const TaskList = () => {
         <div className="content">Ultimate Task Manager</div>
         <div className="sub_content_div">
           <div className="sub_content">
-            Here you can create groups of Tasks and you can view the Completion
+            Here you can create groups of Tasks and you can view the completion
             status of the Tasks group-wise.
           </div>
         </div>
@@ -158,7 +158,7 @@ const TaskList = () => {
                 </div>
                 <div className="field_div_second">
                   <Input
-                    style={{ borderColor: errors[item]?.min ? "red" : "" }}
+                    style={{ borderColor: errors[item]?.max ? "red" : "" }}
                     placeholder="To"
                     type="number"
                     name="max"
@@ -189,4 +189,4 @@ const TaskList = () => {
     </div>
   );
 };
-export default TaskList;
+export default GroupList;
