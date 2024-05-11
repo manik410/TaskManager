@@ -1,18 +1,16 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import TasksReducer from "./slice/addTaskSlice";
-import ConfigReducer from "./slice/systemConfig";
+import GroupReducer from "./slice/addGroupSlice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 
 const rootReducer = combineReducers({
-  tasks: TasksReducer,
-  config: ConfigReducer,
+  groups: GroupReducer,
 });
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["tasks"],
+  whitelist: [""],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
