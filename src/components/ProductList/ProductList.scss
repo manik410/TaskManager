@@ -1,0 +1,105 @@
+@import "../../index.scss";
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 20px 50px;
+  background: #e9f2ff;
+  & .content {
+    @include FontStyle(24px, 700, rgba(0, 0, 0, 0.87));
+    margin: 10px 0px;
+  }
+  & .sub_content_div {
+    @include FlexStyle(space-between, center);
+    margin-bottom: 10px;
+    & .sub_content {
+      @include FontStyle(16px, normal, rgba(0, 0, 0, 0.87));
+      width: 75%;
+      line-height: 24px;
+    }
+  }
+}
+.product_container {
+  padding: 16px;
+  margin: 150px auto 100px auto;
+  border-radius: 12px;
+  box-shadow: 0 2.6400001049px 16px 0 #0000001a;
+  width: 80%;
+  & .product_body {
+    @include FlexStyle(space-between, center);
+    border-radius: 8px;
+    background: rgba(247, 251, 255, 0.57);
+    border: 1px solid rgb(217 234 255);
+    padding: 10px 20px;
+    margin: 12px 0px;
+    cursor: pointer;
+    & .product_details {
+      width: 85%;
+      & .content {
+        @include FlexStyle(flex-start, center);
+        padding: 6px 0px;
+        & .tags {
+          text-transform: capitalize;
+          margin-left: 14px;
+        }
+        & .title_div {
+          display: flex;
+          align-items: center;
+          & .title {
+            @include FontStyle(18px, 600, rgb(14, 13, 13));
+            text-transform: capitalize;
+          }
+        }
+      }
+      & .content_des {
+        @include FontStyle(14px, 400, rgba(88, 88, 89, 1));
+        padding: 6px 0px;
+        width: 80%;
+        word-wrap: break-word;
+      }
+    }
+    & .image_div {
+      width: 100px;
+      height: 100px;
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        background: whitesmoke;
+      }
+    }
+  }
+}
+.footer {
+  position: fixed;
+  bottom: 0;
+  padding: 10px;
+  background: #fff;
+  width: 100%;
+  margin: auto;
+  box-shadow: 0 2.6400001049px 16px 0 #0000001a;
+  & .footer_child {
+    @include FlexStyle(flex-end, center);
+    width: 82%;
+    margin: auto;
+    & .pagination_info {
+      @include FontStyle(18px, 700, rgba(0, 0, 0, 0.87));
+      margin-right: 20px;
+    }
+    button {
+      margin: 0px 10px;
+      background: rgb(20, 182, 246);
+      color: #fff;
+      padding: 4px 20px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+    }
+    button:disabled {
+      pointer-events: none;
+      user-select: none;
+      color: rgba(0, 0, 0, 0.25) !important;
+      background: rgb(0, 0, 0, 0.2);
+    }
+  }
+}

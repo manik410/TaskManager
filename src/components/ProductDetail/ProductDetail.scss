@@ -1,0 +1,58 @@
+@import "../../index.scss";
+.header_detail {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 20px 50px;
+  background: #e9f2ff;
+  & .content {
+    @include FontStyle(24px, 700, rgba(0, 0, 0, 0.87));
+    margin: 10px 0px;
+  }
+  & .sub_content_div_detail {
+    @include FlexStyle("", center);
+    margin-bottom: 10px;
+    & .sub_content {
+      @include FontStyle(16px, normal, rgba(0, 0, 0, 0.87));
+      width: 75%;
+      line-height: 24px;
+    }
+    button {
+      cursor: pointer;
+      background: rgb(45, 115, 220);
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+    }
+  }
+}
+.product_detail_body {
+  @include FlexStyle(center, center);
+  margin: 200px auto 0px;
+  width: 80%;
+  background: #eef5ff;
+  border-radius: 8px;
+  padding: 50px;
+  & .img_container {
+    width: 30%;
+  }
+  & .product_content {
+    max-height: 50vh;
+    overflow: scroll;
+    width: 70%;
+    margin: auto;
+    & .content_div {
+      display: flex;
+      p {
+        @include FontStyle(20px, 500, rgb(77, 76, 76));
+      }
+      p:nth-of-type(1) {
+        width: 30%;
+      }
+      p:nth-of-type(2) {
+        width: 70%;
+      }
+    }
+  }
+}
